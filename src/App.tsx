@@ -2,10 +2,17 @@ import {Routes, Route, Navigate} from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import { useAuthStore } from './stores/useAuthStore';
 import { useEffect } from 'react';
+import DashboardLayout from './pages/DashBoardLayout';
+import DashboardOverview from './pages/dashboard/DashboardOverview';
+import Notifications from './pages/dashboard/Notifications';
+import Projects from './pages/dashboard/Projects';
+import Tasks from './pages/dashboard/Tasks';
+import Team from './pages/dashboard/Team';
+import {Toaster} from 'react-hot-toast'
+import AcceptInvitation from "./pages/AcceptInvitation";
 
 function App() {
 
@@ -74,17 +81,27 @@ if (isCheckingAuth) {
         element={!authUser ? <Signup/> : <Navigate to={"/dashboard"}/>}
         />
 
-        <Route
-        path='/dashboard'
-        element={authUser ? <Dashboard/> : <Navigate to={"/"}/>}
-        />
+        <Route path="/dashboard" element={authUser ? <DashboardLayout/> : <Navigate to="/"/>}>
+          <Route index element={<DashboardOverview />} />
+          <Route path="projects" element={<Projects />} />
+          <Route path="tasks" element={<Tasks />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="team" element={<Team />} />
+        </Route>
 
         <Route
         path='/profile'
         element={authUser ? <Profile/> : <Navigate to={"/"}/>}
         />
 
+        <Route
+        path="/invite/:token"
+        element={authUser ? <AcceptInvitation /> : <Navigate to="/login" />}
+        />
+
       </Routes>
+
+      <Toaster/>
     </div>
   )
 }
