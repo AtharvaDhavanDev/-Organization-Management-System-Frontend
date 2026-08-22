@@ -2038,8 +2038,6 @@ export const useDashboardStore =
         ) => {
 
             try {
-
-                const response =
                     await axiosInstance.post(
                         `/invitations/${token}/accept`
                     );
